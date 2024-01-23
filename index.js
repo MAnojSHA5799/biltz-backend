@@ -48,26 +48,44 @@ app.use(function (req, res, next) {
 //   });
 
 
-  let client = mysql.createConnection({
-    host: "localhost",
-    port: "3306",
-    user: "root",
-    password: "Biltz123@",
-    database: "biltz-data",
+  // let client = mysql.createConnection({
+  //   host: "localhost",
+  //   port: "3306",
+  //   user: "root",
+  //   password: "Biltz123@",
+  //   database: "biltz-data",
+  // });
+  
+  // client.connect((err) => {
+  //   if (err) return console.error(err.message);
+  
+  //   console.log('Connected to the MySQL server.');
+  // });
+
+  const client = new Client({
+    user: "postgres",
+    password: "Biltz123@990",
+    database: "postgres",
+    port: 5432,
+    host: "db.adbusyzbvzlgetciiwso.supabase.co",
+    ssl: { rejectUnauthorized: false },
   });
   
-  client.connect((err) => {
-    if (err) return console.error(err.message);
-  
-    console.log('Connected to the MySQL server.');
-  });
+  client.connect()
+    .then(() => {
+      console.log("Connected!!!");
+    })
+    .catch((error) => {
+      console.error("Connection error:", error);
+    });
+
 
 
   app.post("/addDetails", async (req, res) => {
     console.log(req.body)
               const sql = `INSERT INTO usermessages 
                   (username, email, phone, subject, message) 
-                  VALUES (?, ?, ?, ?, ?)`;
+                  VALUES ($1, $2, $3, $4, $5)`;
               const values = [
                   req.body.username,
                   req.body.email,
@@ -78,10 +96,8 @@ app.use(function (req, res, next) {
       
               client.query(sql, values, (err, result) => {
                 if (err) {
-                  console.log("81",err)
                   res.status(500).send(err);
                 } else {
-                  console.log("84",result)
                   res.status(201).json({ message: 'User details inserted successfully' });
                 }
               });
@@ -92,7 +108,7 @@ app.use(function (req, res, next) {
         console.log(req.body)
                   const sql = `INSERT INTO userConsultQuery 
                       (name, email, phone, selected_option) 
-                      VALUES (?, ?, ?, ?)`;
+                      VALUES ($1, $2, $3, $4)`;
                   const values = [
                       req.body.name,
                       req.body.email,
@@ -102,10 +118,8 @@ app.use(function (req, res, next) {
           
                   client.query(sql, values, (err, result) => {
                     if (err) {
-                      console.log("81",err)
                       res.status(500).send(err);
                     } else {
-                      console.log("84",result)
                       res.status(201).json({ message: 'User details inserted successfully' });
                     }
                   });
@@ -116,7 +130,7 @@ app.use(function (req, res, next) {
             console.log(req.body)
                       const sql = `INSERT INTO comments 
                           (name, email, message) 
-                          VALUES (?, ?,?)`;
+                          VALUES ($1, $2, $3)`;
                       const values = [
                           req.body.name,
                           req.body.email,
@@ -125,10 +139,8 @@ app.use(function (req, res, next) {
               
                       client.query(sql, values, (err, result) => {
                         if (err) {
-                          console.log("81",err)
                           res.status(500).send(err);
                         } else {
-                          console.log("84",result)
                           res.status(201).json({ message: 'User details inserted successfully' });
                         }
                       });
@@ -143,9 +155,9 @@ app.use(function (req, res, next) {
                     console.error("Query:", query); // Log the query that caused the error
                     res.status(500).json({ error: "Internal Server Error" }); // Send a more informative response
                   } else {
-                    console.log("Query result:", result);
-                    // res.json(result.rows);
-                    res.json(result);
+                    console.log("Query result:", result.rows);
+                     res.json(result.rows);
+                    // res.json(result);
                   }
                 });
               });
