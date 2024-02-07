@@ -124,8 +124,6 @@ app.use(function (req, res, next) {
                     }
                   });
           });
-
-        
           app.post("/blogComments", async (req, res) => {
             console.log(req.body)
                       const sql = `INSERT INTO comments 
