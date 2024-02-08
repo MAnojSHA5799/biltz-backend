@@ -79,6 +79,9 @@ app.use(function (req, res, next) {
       console.error("Connection error:", error);
     });
 
+    app.get("/", (req, res) => {
+      res.send("Hello, World!");
+    });
 
 
   app.post("/addDetails", async (req, res) => {
