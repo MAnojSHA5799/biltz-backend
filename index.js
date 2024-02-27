@@ -51,9 +51,9 @@ app.use(function (req, res, next) {
   // let client = mysql.createConnection({
   //   host: "localhost",
   //   port: "3306",
-  //   user: "root",
-  //   password: "Biltz123@",
-  //   database: "biltz-data",
+  //   user: "newsite",
+  //   password: "Alkmaar@123",
+  //   database: "newsite2020",
   // });
   
   // client.connect((err) => {
@@ -70,7 +70,7 @@ app.use(function (req, res, next) {
     host: "db.adbusyzbvzlgetciiwso.supabase.co",
     ssl: { rejectUnauthorized: false },
   });
-  
+
   client.connect()
     .then(() => {
       console.log("Connected!!!");
